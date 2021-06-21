@@ -5,6 +5,7 @@ const bookStatusEl = document.getElementById('bookStatus');
 
 const incompleteListEl = document.getElementById('incompleteBookshelfList');
 const completeListEl = document.getElementById('completeBookshelfList');
+const bookShelfEl = document.querySelectorAll('.book_shelf');
 
 window.addEventListener('load', function() {
     if(typeof(Storage) == undefined) {
@@ -51,6 +52,21 @@ window.addEventListener('load', function() {
         book.insert(data.get('title'), data.get('author'), data.get('year'), isComplete);
 
         showBooksToElement();
+    });
+
+    bookShelfEl.forEach(bookShelf => {
+        bookShelf.addEventListener('click', function(e) {
+            const target = e.target;
+    
+            if(target.classList.contains('delete-book-button')) {
+                if(isConfirmed = confirm('Apakah anda yakin?')) {
+                    const id = target.dataset.id;
+                    book.delete(id);
+
+                    showBooksToElement();
+                }
+            }
+        });
     });
 
     showBooksToElement();

@@ -45,6 +45,18 @@ class Book {
         const books = this.getAll();
         return books.filter(book => book.isComplete == false);
     }
+    
+    /**
+     * Delete Book by ID
+     * @param {Number} id - Book's ID
+     */
+    delete(id) {
+        const books = this.getAll();
+        const index = books.findIndex(book => book.id == id);
+        books.splice(index, 1);
+
+        return localStorage.setItem('books', JSON.stringify(books));
+    }
 }
 
 /**
@@ -54,19 +66,19 @@ class Book {
  */
 function generateBookElement(book) {
     let actionEl = '';
-    
+
     if(book.isComplete) {
         actionEl = `
             <div class="action">
                 <button class="green">Belum selesai di Baca</button>
-                <button class="red">Hapus buku</button>
+                <button class="red delete-book-button" data-id="${book.id}">Hapus buku</button>
             </div>
         `;
     } else {
         actionEl = `
             <div class="action">
                 <button class="green">Selesai dibaca</button>
-                <button class="red">Hapus buku</button>
+                <button class="red delete-book-button" data-id="${book.id}">Hapus buku</button>
             </div>
         `;
     }
