@@ -2,6 +2,7 @@
 const formInput = document.getElementById('inputBook');
 const formSearch = document.getElementById('searchBook');
 const bookStatusEl = document.getElementById('bookStatus');
+const searchFormType = document.getElementById('searchBookType');
 const searchFormInput = document.getElementById('searchBookTitle');
 const isCompleteReadEl = document.getElementById('inputBookIsComplete');
 
@@ -22,7 +23,8 @@ window.addEventListener('load', function() {
         let completeList = '';
         let incompleteList = '';
         const keyword = searchFormInput.value;
-        const books = book.getByTitle(keyword);
+        const type = searchFormType.value;
+        const books = book.getByKeyword(type, keyword);
 
         books.reverse().forEach(book => {
             const bookElement = generateBookElement(book);
@@ -84,6 +86,10 @@ window.addEventListener('load', function() {
     });
 
     searchFormInput.addEventListener('keyup', function() {
+        showBooksToElement();
+    });
+    
+    searchFormType.addEventListener('change', function() {
         showBooksToElement();
     });
 

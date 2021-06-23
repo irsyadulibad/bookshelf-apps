@@ -105,6 +105,7 @@ main {
     padding: 16px;
     width: 100%;
     display: grid;
+    grid-template-columns: auto 0.3fr;
     grid-gap: 10px;
 }
 

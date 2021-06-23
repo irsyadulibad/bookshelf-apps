@@ -54,22 +54,27 @@ class Book {
 
     /**
      * Get the Book by Title
+     * @param {String} type - Keyword's type
      * @param {String} title - Book's title
      */
-    getByTitle(title) {
-        title = new RegExp(title, 'i');
+    getByKeyword(type, keyword) {
+        keyword = new RegExp(keyword, 'i');
         const books = this.getAll();
-        return books.filter(book => book.title.match(title));
-    }
-
-    getComplete() {
-        const books = this.getAll();
-        return books.filter(book => book.isComplete == true);
-    }
-
-    getIncomplete() {
-        const books = this.getAll();
-        return books.filter(book => book.isComplete == false);
+        
+        switch(type) {
+            case 'title':
+                return books.filter(book => book.title.match(keyword));
+            break;
+            case 'author':
+                return books.filter(book => book.author.match(keyword));
+            break;
+            case 'year':
+                return books.filter(book => book.year.match(keyword));
+            break;
+            default:
+                return books.filter(book => book.title.match(keyword) || book.author.match(keyword) || book.year.match(keyword));
+            break;
+        }
     }
 
     /**
