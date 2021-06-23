@@ -1,7 +1,9 @@
 // Inisialisasi element ke dalam konstanta
 const formInput = document.getElementById('inputBook');
-const isCompleteReadEl = document.getElementById('inputBookIsComplete');
+const formSearch = document.getElementById('searchBook');
 const bookStatusEl = document.getElementById('bookStatus');
+const searchFormInput = document.getElementById('searchBookTitle');
+const isCompleteReadEl = document.getElementById('inputBookIsComplete');
 
 const incompleteListEl = document.getElementById('incompleteBookshelfList');
 const completeListEl = document.getElementById('completeBookshelfList');
@@ -17,21 +19,23 @@ window.addEventListener('load', function() {
 
     // Inisialisasi Fungsi
     function showBooksToElement() {
-        const completeBooks = book.getComplete().reverse();
-        let completeBooksEl = '';
-        const inCompleteBooks = book.getIncomplete().reverse();
-        let inCompleteBooksEl = '';
+        let completeList = '';
+        let incompleteList = '';
+        const keyword = searchFormInput.value;
+        const books = book.getByTitle(keyword);
 
-        completeBooks.forEach(book => {
-            completeBooksEl += generateBookElement(book);
+        books.reverse().forEach(book => {
+            const bookElement = generateBookElement(book);
+
+            if(book.isComplete == false) {
+                incompleteList += bookElement;
+            } else {
+                completeList += bookElement;
+            }
         });
 
-        inCompleteBooks.forEach(book => {
-            inCompleteBooksEl += generateBookElement(book);
-        });
-
-        incompleteListEl.innerHTML = inCompleteBooksEl;
-        completeListEl.innerHTML = completeBooksEl;
+        incompleteListEl.innerHTML = incompleteList;
+        completeListEl.innerHTML = completeList;
     }
 
     isCompleteReadEl.addEventListener('change', function(e) {
@@ -77,6 +81,10 @@ window.addEventListener('load', function() {
 
             showBooksToElement();
         });
+    });
+
+    searchFormInput.addEventListener('keyup', function() {
+        showBooksToElement();
     });
 
     showBooksToElement();

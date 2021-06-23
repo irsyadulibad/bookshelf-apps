@@ -52,6 +52,16 @@ class Book {
         }
     }
 
+    /**
+     * Get the Book by Title
+     * @param {String} title - Book's title
+     */
+    getByTitle(title) {
+        title = new RegExp(title, 'i');
+        const books = this.getAll();
+        return books.filter(book => book.title.match(title));
+    }
+
     getComplete() {
         const books = this.getAll();
         return books.filter(book => book.isComplete == true);
