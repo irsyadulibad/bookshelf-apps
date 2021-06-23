@@ -36,6 +36,22 @@ class Book {
         return JSON.parse(localStorage.getItem('books'));
     }
 
+    /**
+     * Get the Book by ID
+     * @param {Number} id - Book's ID
+     * @returns {Object, Number} - Book's data, Book's index
+     */
+    getById(id) {
+        const books = this.getAll();
+        const index = books.findIndex(book => book.id == id);
+        const book = books.find(book => book.id == id);
+        
+        return {
+            book,
+            index
+        }
+    }
+
     getComplete() {
         const books = this.getAll();
         return books.filter(book => book.isComplete == true);
@@ -45,6 +61,19 @@ class Book {
         const books = this.getAll();
         return books.filter(book => book.isComplete == false);
     }
+
+    /**
+     * Move a Book to Specific Shelf
+     * @param {Number} id - Book's ID
+     * @param {Boolean} isComplete - Is Read Complete
+     */
+    moveShelf(id, isComplete) {
+        const books = this.getAll();
+        const index = this.getById(id).index;
+        books[index].isComplete = isComplete;
+
+        return localStorage.setItem('books', JSON.stringify(books));
+    }
     
     /**
      * Delete Book by ID
@@ -52,7 +81,7 @@ class Book {
      */
     delete(id) {
         const books = this.getAll();
-        const index = books.findIndex(book => book.id == id);
+        const index = this.getById(id).index;
         books.splice(index, 1);
 
         return localStorage.setItem('books', JSON.stringify(books));
@@ -70,14 +99,14 @@ function generateBookElement(book) {
     if(book.isComplete) {
         actionEl = `
             <div class="action">
-                <button class="green">Belum selesai di Baca</button>
+                <button class="green incomplete-button" data-id="${book.id}">Belum selesai di Baca</button>
                 <button class="red delete-book-button" data-id="${book.id}">Hapus buku</button>
             </div>
         `;
     } else {
         actionEl = `
             <div class="action">
-                <button class="green">Selesai dibaca</button>
+                <button class="green complete-button" data-id="${book.id}">Selesai dibaca</button>
                 <button class="red delete-book-button" data-id="${book.id}">Hapus buku</button>
             </div>
         `;

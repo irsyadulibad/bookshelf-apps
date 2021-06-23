@@ -62,10 +62,20 @@ window.addEventListener('load', function() {
                 if(isConfirmed = confirm('Apakah anda yakin?')) {
                     const id = target.dataset.id;
                     book.delete(id);
-
-                    showBooksToElement();
                 }
             }
+
+            if(target.classList.contains('incomplete-button')) {
+                const id = target.dataset.id;
+                book.moveShelf(id, false);
+            }
+
+            if(target.classList.contains('complete-button')) {
+                const id = target.dataset.id;
+                book.moveShelf(id, true);
+            }
+
+            showBooksToElement();
         });
     });
 
